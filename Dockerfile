@@ -31,11 +31,13 @@ RUN buildDeps="\
         libyaml-perl \
         locales \
         postgresql-client \
+        libldap2-dev \
         ${buildDeps} \
     # configure locales
     && sed -i '/en_US.UTF-8/s/^# //g' /etc/locale.gen \
     && locale-gen \
     # configure PHP extensions
+    && docker-php-source extract \
     && docker-php-ext-configure imap --with-imap --with-imap-ssl --with-kerberos \
     && docker-php-ext-install \
         gettext \
@@ -44,6 +46,8 @@ RUN buildDeps="\
         pdo_pgsql \
         imap \
         calendar \
+        ldap \
+    && docker-php-source delete \\
     # configure apache
     && a2enmod rewrite \
     && rm /etc/apache2/sites-enabled/000-default.conf \
