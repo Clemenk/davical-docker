@@ -71,6 +71,10 @@ ARG AWL_URL=https://gitlab.com/davical-project/awl/-/archive/${AWL_VERSION}/awl.
 LABEL com.fts.davical-version=$DAVICAL_VERSION \
       com.fts.awl-version=$AWL_VERSION
 
+# Create ldap.conf and add basic configuration
+RUN mkdir /etc/ldap
+RUN echo "TLS_CACERTDIR /etc/ssl/certs" > /etc/ldap/ldap.conf
+
 # Install AWL
 ARG AWL_DEST=/usr/share/awl
 RUN curl -o awl.tar.gz $AWL_URL \
